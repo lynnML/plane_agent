@@ -64,4 +64,5 @@ No route exists.
 To find a sequence of maps, your code should use an implementation of the A⋆ algorithm. As a heuristic, it should use the command line parameter to decide to use either manhattan distance (ignore wind velocities in computing this), euclidean distance, or a heuristic you make up. You should have at the top of your program have comments saying where to find the A⋆ code and heuristics.
 
 The teams with the best made_up function on the sequence of tests used for your homework will receive 1 bonus point. That completes the description the homework. Good Luck!
-
+test edit
+dkkasd
