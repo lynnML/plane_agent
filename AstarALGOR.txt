@@ -1,0 +1,20 @@
+##pseudo code for A* algorithm
+
+function A-STAR-SEARCH(problem) returns a solution, or failure 
+    node := a node with STATE = problem.INITIAL-STATE, PATH-COST = 0,
+        H-COST = heuristic's cost to solution
+    frontier := a priority queue ordered by f=c+h, with node as
+        the only element
+    explored := an empty set
+    loop do
+        if EMPTY?(frontier) then return failure
+        node := POP(frontier) /* lowest f=c+h-value in frontier 
+            since priority-queue */
+        if problem.GOAL-TEST(node.STATE) then return SOLUTION(node)
+        add node.STATE to explored
+        for each action in problem.ACTIONS(node.STATE) do
+            child := CHILD-NODE(problem, node, action)
+            if child.STATE is not in explored or frontier then
+                frontier := INSERT(child, frontier)
+            else if child.STATE is in frontier with higher f value
+                replace that frontier node with child
