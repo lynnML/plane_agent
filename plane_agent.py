@@ -9,6 +9,9 @@ start = []
 current = []
 goal = []
 row = 0
+oList = []
+cList = []
+
 
 outputMapCounter = 0
 
@@ -121,6 +124,14 @@ def outputMap():
 # finds the start of the airplane
     f.close()
 
+# Prints map onto console window
+def printMap():
+    global map
+    for x in range(0, len(map)):
+        print(map[x], end="")     # prints w/o newline
+    print("\n")
+    
+# Finds the position of the Start and goal in map
 def findStartGoal(line):
     list = ['A', 'B', 'C',
             'D', 'E', 'F', 
@@ -154,8 +165,26 @@ def findStartGoal(line):
 # A* alogrithm
 
 def A_starAlgorithm(map, start, goal):
-    print("test")
+    
+    if not cList:
+        print("\nnothin in list")
+        root = node(start)
+        cList.append(root)
+    print(root)
+    
+# creates a NODE
 
+def node(current):
+    node = {"pos" : [current],
+            "parent": [],
+            "h_value": [],
+            "g_value": [],
+            "f_value": []}
+   
+     
+    
+    return node
+    
 
 
 # Clears map - for programmers use
@@ -174,10 +203,9 @@ if(len(prompt) > 0):
     readFile()
     print("Start:", start)
     print("Goal:", goal)
-    print(map)
-    outputMap()
-    clearMap()  
-    outputMap()
+    printMap()
+    
+    A_starAlgorithm(map, start, goal)
     #setHeuristic()
     #setFuel()
     #print(h)
