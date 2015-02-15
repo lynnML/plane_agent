@@ -6,9 +6,12 @@ f = ""
 h = ""
 fuel = 0
 start = []
-current = [2, 4]
-goal = [3, 7]
+current = []
+goal = []
 row = 0
+
+outputMapCounter = 0
+
 # Reads file
 
 def readFile():
@@ -37,11 +40,11 @@ def readMap(fl):
         #print(fl)
         temp = x
         line = temp[:len(x)]
-        print(line)
-        findStart(line)
+#         print(line)
+        findStartGoal(line)
         map.append(line)
     f.close()
-    print(map)
+#     print(map)
     print("row 1 has length:",len(map[0]), "\nrow 2 has length:", len(map[1]))
     
         
@@ -108,23 +111,29 @@ def made_up():
 # Prints current map
 def outputMap():
     global map
+    global outputMapCounter
+    outputMapCounter = outputMapCounter + 1
+    f = open("outputMap.txt", "a+")
+    f.write("\n\nThis is map: %d\r" % (outputMapCounter) )
     for x in range(0, len(map)):
-        print(map[x])
-
+#         print(map[x])
+        f.write(map[x])
 # finds the start of the airplane
+    f.close()
 
-def findStart(line):
+def findStartGoal(line):
     list = ['A', 'B', 'C',
             'D', 'E', 'F', 
             'G', 'H', 'I']
     print(line)
     global row
     global start
+    global goal
     pos = 0
     
     for j in range(0, len(line)):
         current = line[pos + j:pos + j + 1]
-        print(current)
+#         print(current)
         for k in range(0, len(list)):
 #             test = list[k]
 #             print(test)
@@ -137,18 +146,38 @@ def findStart(line):
 #                 print("column =", j)
 #             print("j = ", j)    
 #             print("k = ", k)
-     
+        if(current == 'P'):
+            goal = [row, j]
     row = row + 1  
     #print(f1)
 
-# Finds the goal of the airplane
+# A* alogrithm
+
+def A_starAlgorithm(map, start, goal):
+    print("test")
+
+
+
+# Clears map - for programmers use
+def clearMap():
+    global outputMapCounter
+    outputMapCounter = 0
+    f = open("outputMap.txt", "w+")
+    f.write("")
+    f.close()
+    
+
 ####### Main #######
 
 getPrompt()
 if(len(prompt) > 0):
     readFile()
-    print(start)
+    print("Start:", start)
+    print("Goal:", goal)
     print(map)
+    outputMap()
+    clearMap()  
+    outputMap()
     #setHeuristic()
     #setFuel()
     #print(h)
