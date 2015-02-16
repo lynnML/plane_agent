@@ -194,21 +194,28 @@ def A_starAlgorithm(node):
         newParent = node["parent"]
         temp["parent"] = newParent
         
-        index = newParent
-        test = valueOnMap(index)
-        temp["g_value"] = test
+        tempIndex = temp["pos"]
+        posVal = valueOnMap(newParent)
+        tempPosVal = valueOnMap(tempIndex)
+        temp["g_value"] = posVal
         temp["h_value"] = setHeuristic(temp["pos"], goal)
         temp["f_value"] = temp["g_value"] + temp["h_value"]
-        temp["fuel"] = valueOnMap(temp["pos"])
-        min_f = temp["f_value"]
-        if(min_f > max_f):
-            max_f = min_f
+        temp["fuel"] = int(node["fuel"]) - posVal
+        temp["fuelToLeave"] = valueOnMap(temp["pos"])
         
         
-        print(temp)
+    print("this is the openlist", oList)  
+    for x in oList:
+        min = x["f_value"]
+        if(min < x["f_value"]):
+            min = x["f_valu"]
+    print("this is min:" ,min)
+               
+        #sprint(temp)
+        
         #print(max_f)
 
-    
+
        # print(valueOnMap())
         
 # Gets index and finds the value on the map
@@ -225,7 +232,7 @@ def valueOnMap(index):
     if(x.isalpha()):
         value = list.index(x)
     else:
-        value = int(x)
+        value = x
 #     for x in list:
 #         if(x == y[col]):
 #             value = list.index(x)
@@ -233,7 +240,7 @@ def valueOnMap(index):
 #         counter = counter + 1
         
     #print(value)
-    return value
+    return int(value)
 
 # creates a NODE
 
@@ -245,6 +252,7 @@ def node(map, current):
             "g_value": 0,
             "f_value": 0,
             "fuel" : 0,
+            "fuelToLeave": 0,
             "map" : [map]}
        
     return node
@@ -254,8 +262,10 @@ def node(map, current):
 def getNeighbors(current):
     global lenCol
     global lenRow
-    global f
-    global oList
+    global prompt
+    #global oList
+    map = current["map"]
+    fileName = prompt[1]
     index = current["pos"]
     print("index", index)
     list = []
@@ -264,8 +274,9 @@ def getNeighbors(current):
     bottom = index[0] + 1
     
     if(top >= 0):
-        if(f == "manhattan"):
-            list.append(top,index[1])
+        if(fileName == "manhattan"):
+            y = [top, index[1]]
+            list.append(y)
         else:
             temp = getLeftRight(top,index)
             for x in temp:
@@ -276,20 +287,25 @@ def getNeighbors(current):
     for x in temp:
         list.append(x)
     
-
+    
     if(bottom <= numRow):
-        if(f == "manhattan"):
-            list.append(top,index[1])
+        if(fileName == "manhattan"):
+            y = [bottom, index[1]]
+            list.append(y)
         else:    
             temp = getLeftRight(bottom, index)    
             for x in temp:
                 list.append(x)
     
+    
+    print("this is list:", list, fileName)
     newList = []
     for x in list:
         child = x
-        oList.append(child)
-        newList.append(node(map, x))
+        newNode = node(map, child)
+        #print("createNew node",newNode)
+        oList.append(newNode)
+        newList.append(newNode)
      
      
 #     
@@ -355,6 +371,7 @@ if not oList:
     root["h_value"] = setHeuristic(start, goal)
     root["f_value"] = root["g_value"] + root["h_value"]
     root["fuel"] = fuel
+    root["fuelToLeave"] = valueOnMap(root["pos"])
     cList.append(root)
     print(root)
     A_starAlgorithm(root)
