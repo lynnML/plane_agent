@@ -14,6 +14,8 @@ start = []
 goal = []
 oList = []
 cList = []
+len_cList = 0
+len_oList = 0
 numCol = 0
 numRow = 0
 outputMapCounter = 0
@@ -183,8 +185,9 @@ def findStartGoal(line):
 # A* alogrithm
 
 def A_starAlgorithm(node):
-    global map
-    max_f = 0;
+    global len_cList
+    global len_oList
+
     node["neighbors"] = getNeighbors(node)
  #   print(node["neighbors"])
     child = node.get("neighbors")
@@ -204,20 +207,106 @@ def A_starAlgorithm(node):
         temp["fuelToLeave"] = valueOnMap(temp["pos"])
         
         
-    print("this is the openlist", oList)  
+    print("this is the openlist", node["neighbors"]) 
+    print("\nthis is the oList update\n", oList)
+    
+#     print(len(node["neighbors"][0]))
+              
+    nodePrev= node["neighbors"][0]
+#    print(nodePrev["pos"])
+    nextLocation = findLowest()
+    counter = 0
+    for x in child:
+        if(nextLocation == x["pos"]):
+            changeMap(x)
+        
+    print("*********",node)
+    
+
+
+# Function that updates the next map
+def changeMap(node):
+    global list
+    parent = node["parent"]
+    index = node["pos"]
+    map = node["map"]
+    rowP = parent[0]
+    colP = parent[1]
+    lineP = map[rowP]
+    charP = charOnMap(parent)
+    counterP = 0
+    numP = 0
+    for x in list:
+        if(x == charP):
+            numP = counterP
+        counterP = counterP + 1
+    numP = str(numP)
+    
+    newLineP = lineP[0:colP] + numP + lineP[colP + 1:]
+ 
+    map[rowP] = newLineP
+ 
+    
+    row = index[0]
+    col = index[1]
+    line = map[row]
+    char = valueOnMap(index)
+    num = list[char]
+        
+    newLine = line[0:col] + num + line[col + 1:]
+ 
+    map[row] = newLine
+    
+#    
+   
+    #node["map"] = map
+  
+  
+  
+# Function that returns character of map
+def charOnMap(index):
+     #   index = [0, 0]
+    global map
+    global list
+    row = index[0]
+    col = index[1]
+    
+    y = map[row]
+    x = y[col]
+    print(x)
+    return x
+# Function that finds lowest heuristic value
+
+def findLowest():
+    global oList
+    global cList
+    print()
+    min = 8
     for x in oList:
-        min = x["f_value"]
-        if(min < x["f_value"]):
-            min = x["f_valu"]
-    print("this is min:" ,min)
-               
-        #sprint(temp)
+        if(min > x["f_value"]):
+            min = x["f_value"]
+            pos = x["pos"]
+    print("this is min:" ,min)           
+    print("this is pos:" ,pos)           
+    counter = 0
+    for x in oList:
+        if(pos == x["pos"]):
+            print("found pos with lowest f_value: ", pos)
+             
+        counter = counter + 1
+#     print("\nThis is openList: \n", len(oList))
+#     print("\nThis is closedList: \n", len(cList))
+    cList.append(oList[counter - 1])
+    clear = oList[counter - 1]
+    oList.remove(clear)
+#     print(clear)
+#     print("\n UPDATE openList: \n", len(oList))
+#     print("\n UPDATE closedList: \n", len(cList))
+#     print(pos)
+    return pos
         
-        #print(max_f)
-
-
-       # print(valueOnMap())
         
+    
 # Gets index and finds the value on the map
 
 def valueOnMap(index):
@@ -253,7 +342,7 @@ def node(map, current):
             "f_value": 0,
             "fuel" : 0,
             "fuelToLeave": 0,
-            "map" : [map]}
+            "map": map }
        
     return node
 
@@ -373,10 +462,32 @@ if not oList:
     root["fuel"] = fuel
     root["fuelToLeave"] = valueOnMap(root["pos"])
     cList.append(root)
-    print(root)
+    #print(root)
     A_starAlgorithm(root)
-    #setHeuristic()
-    #setFuel()
-    #print(h)
-    #outputMap()
 
+#while(len_cList > 0):
+    nextOnList = len_cList - 1
+    current = cList[nextOnList]
+    #current["map"] = map
+    print(current)
+    print(root["map"])
+    
+    print(current["map"])
+    printMap()
+    
+
+    #A_starAlgorithm(current)
+    #break;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
